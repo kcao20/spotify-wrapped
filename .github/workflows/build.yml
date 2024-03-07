@@ -6,11 +6,16 @@ permissions:
 
 on:
   pull_request:
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Set fetch depth
+        run: git fetch --depth=0
+
       - name: Checkout sources
         uses: actions/checkout@v4
 
@@ -24,6 +29,9 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
         with:
           add-job-summary-as-pr-comment: on-failure
+
+      - name: Format with Spotless
+        run: ./gradlew spotlessApply
 
       - name: Build with Gradle
         run: ./gradlew build
