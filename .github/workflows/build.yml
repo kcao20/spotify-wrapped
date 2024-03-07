@@ -29,8 +29,8 @@ jobs:
         with:
           add-job-summary-as-pr-comment: on-failure
 
-      - name: Format with Spotless
-        run: ./gradlew spotlessApply
+      - name: Check code formatting with Spotless
+        run: ./gradlew spotlessCheck
 
       - name: Build with Gradle
         run: ./gradlew build
