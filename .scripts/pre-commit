@@ -2,17 +2,17 @@
 
 stagedFiles=$(git diff --staged --name-only)
 
-echo "Running spotless check"
+echo "Formatting files"
 ./gradlew spotlessApply
 
 if [ $? -eq 0 ]; then
-    echo "spotless check succeed"
+    echo "Formatting files succeeded"
     for file in $stagedFiles; do
         if test -f "$file"; then
             git add $file
         fi
     done
 else
-    echo "spotless check failed" >&2
+    echo "Formatting files failed" >&2
     exit 1
 fi
