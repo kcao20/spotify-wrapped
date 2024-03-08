@@ -13,6 +13,9 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        manifestPlaceholders["redirectSchemeName"] =  "spotify-wrapped"
+        manifestPlaceholders["redirectHostName"] =  "auth"
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -43,6 +46,8 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+    implementation(libs.auth)
+    implementation(libs.okhttp)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
