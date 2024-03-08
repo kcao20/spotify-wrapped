@@ -11,6 +11,8 @@ on:
 
 jobs:
   build:
+    name:
+      format & build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
