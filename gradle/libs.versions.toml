@@ -1,6 +1,7 @@
 [versions]
 agp = "8.3.0"
 auth = "2.1.1"
+dotenvJava = "3.0.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
@@ -15,6 +16,7 @@ okhttp = "4.9.3"
 
 [libraries]
 auth = { module = "com.spotify.android:auth", version.ref = "auth" }
+dotenv-java = { module = "io.github.cdimascio:dotenv-java", version.ref = "dotenvJava" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

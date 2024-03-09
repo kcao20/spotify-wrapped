@@ -17,6 +17,8 @@ import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -31,23 +33,27 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 public class Auth {
-    public static final String CLIENT_ID = "e6c66ac59d3d45668227c6d22e957aa9";
-    public static final String REDIRECT_URI = "spotify-wrapped://auth";
-    public static final String CLIENT_SECRET = "214875922bb741ba92c0bb3ce9d15b8d";
+    public final String CLIENT_ID;
+    public final String CLIENT_SECRET;
+    public final String REDIRECT_URI;
 
     private final OkHttpClient mOkHttpClient = new OkHttpClient();
-    private String mAccessToken, mAccessCode;
-    private Call mCall;
-    private Context context;
-    private AuthCallback callback;
-    private Handler handler;
-
+    private String mAccessToken;
     private String mRefreshToken;
+    private Call mCall;
+    private final Context context;
+    private final AuthCallback callback;
+    private final Handler handler;
 
     public Auth(Context context, AuthCallback callback) {
         this.context = context;
         this.callback = callback;
         handler = new Handler(Looper.getMainLooper());
+        Dotenv dotenv = Dotenv.configure().directory("/assets").filename("env").load();
+
+        CLIENT_ID = dotenv.get("CLIENT_ID");
+        CLIENT_SECRET = dotenv.get("CLIENT_SECRET");
+        REDIRECT_URI = dotenv.get("REDIRECT_URI");
     }
 
     public void getToken(ActivityResultLauncher<Intent> launcher) {
@@ -68,19 +74,9 @@ public class Auth {
         final AuthorizationResponse response =
                 AuthorizationClient.getResponse(Activity.RESULT_OK, data);
 
-        //        if (response != null && response.getType() == AuthorizationResponse.Type.TOKEN) {
-        //            // Token request succeeded, handle the access token
-        //            mAccessToken = response.getAccessToken();
-        //            callback.onTokenReceived(mAccessToken);
-        //        } else {
-        //            // Token request failed or response is null, handle the error
-        //            String error = response != null ? response.getError() : "Unknown error";
-        //            callback.onError(error);
-        //        }
-
         if (response != null && response.getType() == AuthorizationResponse.Type.CODE) {
             // Token request succeeded, handle the access token
-            mAccessCode = response.getCode();
+            String mAccessCode = response.getCode();
             callback.onCodeReceived(mAccessCode);
             exchangeAuthorizationCodeForAccessToken(mAccessCode);
         } else {
@@ -161,7 +157,7 @@ public class Auth {
             }
         });
     }
-    // for now no use case for it because no database
+
     public void refreshAccessToken(String refreshToken) {
         RequestBody formBody = new FormBody.Builder()
                 .add("grant_type", "refresh_token")
