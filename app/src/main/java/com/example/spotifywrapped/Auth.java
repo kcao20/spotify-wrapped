@@ -56,6 +56,7 @@ public class Auth {
         REDIRECT_URI = dotenv.get("REDIRECT_URI");
     }
 
+    // Implicit Grant
     public void getToken(ActivityResultLauncher<Intent> launcher) {
         final AuthorizationRequest request =
                 getAuthenticationRequest(AuthorizationResponse.Type.TOKEN);
@@ -264,12 +265,14 @@ public class Auth {
         });
     }
 
+    // Delete access token and refresh token
     public void logout() {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                if (mAccessToken != null) {
+                if (mAccessToken != null || mRefreshToken != null) {
                     mAccessToken = null;
+                    mRefreshToken = null;
                     Toast.makeText(context, "logged out successfully", Toast.LENGTH_SHORT)
                             .show();
                 }
