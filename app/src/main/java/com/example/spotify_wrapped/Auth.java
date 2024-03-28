@@ -1,4 +1,4 @@
-package com.example.spotifywrapped;
+package com.example.spotify_wrapped;
 
 import android.app.Activity;
 import android.content.Context;

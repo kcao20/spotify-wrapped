@@ -1,4 +1,4 @@
-package com.example.spotifywrapped.ui.home;
+package com.example.spotify_wrapped.ui.home;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,9 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.spotifywrapped.Auth;
-import com.example.spotifywrapped.R;
-import com.example.spotifywrapped.databinding.FragmentHomeBinding;
+import com.example.spotify_wrapped.Auth;
+import com.example.spotify_wrapped.R;
+import com.example.spotify_wrapped.databinding.FragmentHomeBinding;
 
 public class HomeFragment extends Fragment implements Auth.AuthCallback {
     private Auth auth;
