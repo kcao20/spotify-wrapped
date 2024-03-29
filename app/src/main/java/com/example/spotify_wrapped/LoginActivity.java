@@ -30,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.time.Duration;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -50,22 +51,26 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Dotenv dotenv = Dotenv.configure().directory("/assets").filename("env").load();
+        CLIENT_ID = dotenv.get("CLIENT_ID");
+        CLIENT_SECRET = dotenv.get("CLIENT_SECRET");
+        REDIRECT_URI = dotenv.get("REDIRECT_URI");
+
         sharedPreferences =
                 this.getSharedPreferences(getString(R.string.shared_pref_key), MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
         if (sharedPreferences.contains("access_token")
                 || sharedPreferences.contains("refresh_token")) {
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            if (System.currentTimeMillis() > sharedPreferences.getLong("expires_at", 0)) {
+                refreshAccessToken();
+            } else {
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            }
         }
 
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        Dotenv dotenv = Dotenv.configure().directory("/assets").filename("env").load();
-        CLIENT_ID = dotenv.get("CLIENT_ID");
-        CLIENT_SECRET = dotenv.get("CLIENT_SECRET");
-        REDIRECT_URI = dotenv.get("REDIRECT_URI");
 
         AuthorizationRequest.Builder builder = new AuthorizationRequest.Builder(
                 CLIENT_ID, AuthorizationResponse.Type.CODE, REDIRECT_URI);
@@ -103,7 +108,6 @@ public class LoginActivity extends AppCompatActivity {
 
                     // Most likely auth flow was cancelled
                 default:
-                    // Handle other cases
             }
         }
     }
@@ -142,6 +146,12 @@ public class LoginActivity extends AppCompatActivity {
 
                     editor.putString("access_token", jsonObject.getString("access_token"));
                     editor.putString("refresh_token", jsonObject.getString("refresh_token"));
+                    long currentTimestamp = System.currentTimeMillis();
+                    editor.putLong(
+                            "expires_at",
+                            currentTimestamp
+                                    + Duration.ofSeconds(jsonObject.getInt("expires_in"))
+                                            .toMillis());
                     editor.apply();
 
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -152,7 +162,9 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void refreshAccessToken(String refreshToken) {
+    public void refreshAccessToken() {
+        String refreshToken = sharedPreferences.getString("refresh_token", null);
+
         RequestBody formBody = new FormBody.Builder()
                 .add("grant_type", "refresh_token")
                 .add("refresh_token", refreshToken)
@@ -183,6 +195,8 @@ public class LoginActivity extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(response.body().string());
                     editor.putString("access_token", jsonObject.getString("access_token"));
                     editor.apply();
+
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 } catch (JSONException | IOException e) {
                     Log.d("HTTP", "Failed to parse token response: " + e.getMessage());
                 }
