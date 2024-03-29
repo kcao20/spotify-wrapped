@@ -1,4 +1,4 @@
-package com.example.spotifywrapped;
+package com.example.spotify_wrapped;
 
 import android.os.Bundle;
 
@@ -8,7 +8,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.spotifywrapped.databinding.ActivityMainBinding;
+import com.example.spotify_wrapped.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
