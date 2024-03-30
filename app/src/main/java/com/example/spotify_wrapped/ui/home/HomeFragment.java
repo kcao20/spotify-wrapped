@@ -17,9 +17,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.spotify_wrapped.API;
-import com.example.spotify_wrapped.LoginActivity;
+import com.example.spotify_wrapped.AuthActivity;
+import com.example.spotify_wrapped.LinkActivity;
 import com.example.spotify_wrapped.R;
 import com.example.spotify_wrapped.databinding.FragmentHomeBinding;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeFragment extends Fragment {
 
@@ -41,18 +43,27 @@ public class HomeFragment extends Fragment {
         TextView profileTextView = root.findViewById(R.id.response_text_view);
 
         Button profileBtn = root.findViewById(R.id.profile_btn);
+        Button unlink = root.findViewById(R.id.unlink);
+
         Button logout = root.findViewById(R.id.logout);
 
         profileBtn.setOnClickListener(v -> {
             api.onGetUserProfileClicked(profileTextView);
         });
 
-        logout.setOnClickListener(v -> {
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
+        unlink.setOnClickListener(v -> {
             if (homeViewModel.logout()) {
                 Toast.makeText(getContext(), "Logged out Successfully", Toast.LENGTH_SHORT)
                         .show();
-                startActivity(new Intent(requireActivity(), LoginActivity.class));
+                startActivity(new Intent(requireActivity(), LinkActivity.class));
             }
+        });
+
+        logout.setOnClickListener(v -> {
+            firebaseAuth.signOut();
+            startActivity(new Intent(requireActivity(), AuthActivity.class));
         });
 
         return root;
