@@ -23,6 +23,8 @@ import com.example.spotify_wrapped.R;
 import com.example.spotify_wrapped.databinding.FragmentHomeBinding;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.json.JSONException;
+
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
@@ -42,13 +44,20 @@ public class HomeFragment extends Fragment {
 
         TextView profileTextView = root.findViewById(R.id.response_text_view);
 
-        Button profileBtn = root.findViewById(R.id.profile_btn);
-        Button unlink = root.findViewById(R.id.unlink);
+        Button profileBtn = binding.profileBtn;
+        Button unlink = binding.unlink;
 
-        Button logout = root.findViewById(R.id.logout);
+        Button logout = binding.logout;
 
         profileBtn.setOnClickListener(v -> {
-            api.onGetUserProfileClicked(profileTextView);
+            api.getUserProfile();
+            api.getData().observe(getViewLifecycleOwner(), data -> {
+                try {
+                    profileTextView.setText(data.toString(2));
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            });
         });
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();

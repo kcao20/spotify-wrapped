@@ -119,7 +119,7 @@ public class LinkActivity extends AppCompatActivity {
         AuthorizationRequest.Builder builder = new AuthorizationRequest.Builder(
                 CLIENT_ID, AuthorizationResponse.Type.CODE, REDIRECT_URI);
 
-        builder.setScopes(new String[] {"user-read-private", "user-read-email"});
+        builder.setScopes(new String[] {"user-read-private", "user-read-email", "user-top-read"});
         AuthorizationRequest request = builder.build();
 
         Button login = binding.buttonLogin;
