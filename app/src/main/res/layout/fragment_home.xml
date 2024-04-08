@@ -14,18 +14,17 @@
         android:text="unlink"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/logout" />
+        app:layout_constraintStart_toEndOf="@+id/profile_btn" />
 
     <Button
         android:id="@+id/profile_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="24dp"
         android:text="profile"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/unlink"
+        app:layout_constraintStart_toEndOf="@+id/logout" />
 
     <Button
         android:id="@+id/logout"
@@ -34,8 +33,7 @@
         android:layout_marginBottom="24dp"
         android:text="logout"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.232"
+        app:layout_constraintEnd_toStartOf="@+id/profile_btn"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -49,6 +47,33 @@
         app:layout_constraintBottom_toTopOf="@+id/logout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/imageBtn" />
+
+    <ImageButton
+        android:id="@+id/imageBtn"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="TODO"
+        android:padding="0dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/round_person_24"
+        android:background="@drawable/round_background"
+        app:layout_constraintBottom_toTopOf="@+id/response_text_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/welcome_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Hello, Guest"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/response_text_view"
+        app:layout_constraintEnd_toStartOf="@+id/imageBtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ import com.example.spotify_wrapped.LinkActivity;
 import com.example.spotify_wrapped.R;
 import com.example.spotify_wrapped.databinding.FragmentHomeBinding;
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 
@@ -42,15 +44,27 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        TextView profileTextView = root.findViewById(R.id.response_text_view);
+        ImageButton imageBtn = binding.imageBtn;
+        TextView weclomeTextView = binding.welcomeTextView;
+        TextView profileTextView = binding.responseTextView;
 
         Button profileBtn = binding.profileBtn;
         Button unlink = binding.unlink;
-
         Button logout = binding.logout;
 
+        api.getUserProfile();
+        api.getData().observe(getViewLifecycleOwner(), data -> {
+            try {
+                String imageUrl = data.getJSONArray("images").getJSONObject(1).getString("url");
+                Picasso.get().load(imageUrl).into(imageBtn);
+                weclomeTextView.setText(
+                        String.format("Welcome, %s", data.getString("display_name")));
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
         profileBtn.setOnClickListener(v -> {
-            api.getUserProfile();
             api.getData().observe(getViewLifecycleOwner(), data -> {
                 try {
                     profileTextView.setText(data.toString(2));
