@@ -2,7 +2,6 @@ package com.example.spotify_wrapped.ui.home;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -20,11 +18,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.example.spotify_wrapped.API;
-import com.example.spotify_wrapped.AuthActivity;
-import com.example.spotify_wrapped.LinkActivity;
 import com.example.spotify_wrapped.R;
 import com.example.spotify_wrapped.databinding.FragmentHomeBinding;
-import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -51,9 +46,6 @@ public class HomeFragment extends Fragment {
         TextView profileTextView = binding.responseTextView;
 
         Button profileBtn = binding.profileBtn;
-        Button unlink = binding.unlink;
-        Button logout = binding.logout;
-        Button changeLoginDetails = binding.changeLoginDetails;
 
         api.getUserProfile();
         api.getData().observe(getViewLifecycleOwner(), data -> {
@@ -77,25 +69,8 @@ public class HomeFragment extends Fragment {
             });
         });
 
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-
-        unlink.setOnClickListener(v -> {
-            if (homeViewModel.logout()) {
-                api.logout();
-                Toast.makeText(getContext(), "Logged out Successfully", Toast.LENGTH_SHORT)
-                        .show();
-                startActivity(new Intent(requireActivity(), LinkActivity.class));
-            }
-        });
-
-        logout.setOnClickListener(v -> {
-            api.logout();
-            firebaseAuth.signOut();
-            startActivity(new Intent(requireActivity(), AuthActivity.class));
-        });
-
-        changeLoginDetails.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.homeToVerifyLogin);
+        imageBtn.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.homeToProfile);
         });
 
         return root;

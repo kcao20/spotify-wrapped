@@ -40,8 +40,6 @@ public class AuthActivity extends AppCompatActivity {
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
 
         Button buttonSignIn = findViewById(R.id.buttonSignIn);
-        Button buttonSignUp = findViewById(R.id.buttonSignUp);
-
         user = firebaseAuth.getCurrentUser();
         if (user != null) {
             startActivity(new Intent(AuthActivity.this, LinkActivity.class));
@@ -77,12 +75,11 @@ public class AuthActivity extends AppCompatActivity {
         });
 
         buttonSignIn.setOnClickListener(v -> startSignInActivity());
-        buttonSignUp.setOnClickListener(v -> startSignUpActivity());
     }
 
     private void startSignInActivity() {
-        List<AuthUI.IdpConfig> providers =
-                Arrays.asList(new AuthUI.IdpConfig.EmailBuilder().build());
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.EmailBuilder().setRequireName(false).build());
 
         Intent signInIntent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
@@ -91,19 +88,5 @@ public class AuthActivity extends AppCompatActivity {
                 .build();
 
         signInLauncher.launch(signInIntent);
-    }
-
-    private void startSignUpActivity() {
-        List<AuthUI.IdpConfig> providers =
-                Arrays.asList(new AuthUI.IdpConfig.EmailBuilder().build());
-
-        Intent signUpIntent = AuthUI.getInstance()
-                .createSignInIntentBuilder()
-                .setAvailableProviders(providers)
-                .setIsSmartLockEnabled(false)
-                .setLogo(R.drawable.ic_launcher_foreground)
-                .build();
-
-        signInLauncher.launch(signUpIntent);
     }
 }

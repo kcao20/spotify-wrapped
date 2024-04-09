@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/fragment_horizontal_margin"
     android:paddingRight="@dimen/fragment_horizontal_margin"
     android:paddingTop="@dimen/fragment_vertical_margin"
-    tools:context="EditLoginFragment">
+    tools:context=".ui.profile.EditLoginFragment">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/pass1_input_layout"

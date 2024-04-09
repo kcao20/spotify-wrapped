@@ -11,8 +11,9 @@
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/homeToVerifyLogin"
-            app:destination="@id/ReAuthFragment" />
+            android:id="@+id/homeToProfile"
+            app:destination="@id/profileFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
@@ -29,22 +30,37 @@
 
     <fragment
         android:id="@+id/editLoginFragment"
-        android:name="com.example.spotify_wrapped.EditLoginFragment"
+        android:name="com.example.spotify_wrapped.ui.profile.EditLoginFragment"
         android:label="editLogin"
         tools:layout="@layout/fragment_edit_login">
     <action
         android:id="@+id/updateLoginToHome"
-        app:destination="@id/navigation_home" />
+        app:destination="@id/navigation_home"
+        app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
         android:id="@+id/ReAuthFragment"
-        android:name="com.example.spotify_wrapped.ReAuthFragment"
+        android:name="com.example.spotify_wrapped.ui.profile.ReAuthFragment"
         android:label="reauth"
         tools:layout="@layout/fragment_reauth">
         <action
             android:id="@+id/ReAuthToUpdateLogin"
             app:destination="@id/editLoginFragment" />
+        <argument
+            android:name="op"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.spotify_wrapped.ui.profile.ProfileFragment"
+        android:label="profile"
+        tools:layout="@layout/fragment_profile">
+    <action
+        android:id="@+id/profileToVerifyLogin"
+        app:destination="@id/ReAuthFragment"
+        app:popUpToInclusive="true"/>
     </fragment>
 
 </navigation>
