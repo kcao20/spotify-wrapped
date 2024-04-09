@@ -9,7 +9,11 @@
         android:id="@+id/navigation_home"
         android:name="com.example.spotify_wrapped.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/homeToVerifyLogin"
+            app:destination="@id/ReAuthFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_dashboard"
@@ -22,4 +26,25 @@
         android:name="com.example.spotify_wrapped.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/editLoginFragment"
+        android:name="com.example.spotify_wrapped.EditLoginFragment"
+        android:label="editLogin"
+        tools:layout="@layout/fragment_edit_login">
+    <action
+        android:id="@+id/updateLoginToHome"
+        app:destination="@id/navigation_home" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ReAuthFragment"
+        android:name="com.example.spotify_wrapped.ReAuthFragment"
+        android:label="reauth"
+        tools:layout="@layout/fragment_reauth">
+        <action
+            android:id="@+id/ReAuthToUpdateLogin"
+            app:destination="@id/editLoginFragment" />
+    </fragment>
+
 </navigation>

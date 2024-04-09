@@ -5,6 +5,7 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.example.spotify_wrapped.API;
 import com.example.spotify_wrapped.AuthActivity;
@@ -51,16 +53,17 @@ public class HomeFragment extends Fragment {
         Button profileBtn = binding.profileBtn;
         Button unlink = binding.unlink;
         Button logout = binding.logout;
+        Button changeLoginDetails = binding.changeLoginDetails;
 
         api.getUserProfile();
         api.getData().observe(getViewLifecycleOwner(), data -> {
             try {
-                String imageUrl = data.getJSONArray("images").getJSONObject(1).getString("url");
-                Picasso.get().load(imageUrl).into(imageBtn);
                 weclomeTextView.setText(
                         String.format("Welcome, %s", data.getString("display_name")));
+                String imageUrl = data.getJSONArray("images").getJSONObject(1).getString("url");
+                Picasso.get().load(imageUrl).into(imageBtn);
             } catch (JSONException e) {
-                throw new RuntimeException(e);
+                Log.d("error", e.toString());
             }
         });
 
@@ -69,7 +72,7 @@ public class HomeFragment extends Fragment {
                 try {
                     profileTextView.setText(data.toString(2));
                 } catch (JSONException e) {
-                    throw new RuntimeException(e);
+                    Log.d("error", e.toString());
                 }
             });
         });
@@ -78,6 +81,7 @@ public class HomeFragment extends Fragment {
 
         unlink.setOnClickListener(v -> {
             if (homeViewModel.logout()) {
+                api.logout();
                 Toast.makeText(getContext(), "Logged out Successfully", Toast.LENGTH_SHORT)
                         .show();
                 startActivity(new Intent(requireActivity(), LinkActivity.class));
@@ -85,8 +89,13 @@ public class HomeFragment extends Fragment {
         });
 
         logout.setOnClickListener(v -> {
+            api.logout();
             firebaseAuth.signOut();
             startActivity(new Intent(requireActivity(), AuthActivity.class));
+        });
+
+        changeLoginDetails.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.homeToVerifyLogin);
         });
 
         return root;

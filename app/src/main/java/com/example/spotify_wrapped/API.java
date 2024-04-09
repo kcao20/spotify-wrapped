@@ -72,6 +72,10 @@ public class API extends ViewModel {
         request(String.format("https://api.spotify.com/v1/me/top/%s", type));
     }
 
+    public void logout() {
+        mAccessToken = null;
+    }
+
     public LiveData<JSONObject> getData() {
         return data;
     }

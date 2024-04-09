@@ -53,14 +53,12 @@ public class AuthActivity extends AppCompatActivity {
                 user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     String userEmail = user.getEmail();
-                    String userName = user.getDisplayName();
                     String uid = user.getUid();
                     usersRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (!dataSnapshot.exists()) {
                                 usersRef.child(uid).child("email").setValue(userEmail);
-                                usersRef.child(uid).child("name").setValue(userName);
                             }
                         }
 
