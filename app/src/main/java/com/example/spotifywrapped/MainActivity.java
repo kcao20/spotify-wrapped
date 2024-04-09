@@ -7,13 +7,18 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.spotifywrapped.MusicTaste.MusicTasteAdapter;
 import com.example.spotifywrapped.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private String[] genres = {"Pop", "Country", "Jazz"};
+    private int[] genreStats = {5, 3, 1};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,5 +39,15 @@ public class MainActivity extends AppCompatActivity {
                 Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+
+        // UserStory1
+        setUpRecyclerView();
+    }
+
+    private void setUpRecyclerView() {
+        RecyclerView recyclerView = findViewById(R.id.musicTasteList);
+        MusicTasteAdapter adapter = new MusicTasteAdapter(genres, genreStats);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 }

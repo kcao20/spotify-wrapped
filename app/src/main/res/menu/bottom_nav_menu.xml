@@ -16,4 +16,9 @@
         android:icon="@drawable/ic_notifications_black_24dp"
         android:title="@string/title_notifications" />
 
+    <item
+        android:id="@+id/navigation_music_taste"
+        android:icon="@drawable/ic_notifications_black_24dp"
+        android:title="@string/music_taste_nav" />
+
 </menu>

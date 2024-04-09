@@ -3,4 +3,13 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="music_taste_nav">Music Taste</string>
+    <string name="hello_blank_fragment">This needs to be updated</string>
+    <string name="account_info">Account Info</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="cancel">Cancel</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="music_taste">Music taste</string>
 </resources>
