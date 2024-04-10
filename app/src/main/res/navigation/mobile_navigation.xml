@@ -22,4 +22,10 @@
         android:name="com.example.spotifywrapped.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_music_taste"
+        android:name="com.example.spotifywrapped.MusicTaste.MusicTasteFragment"
+        android:label="Music Taste"
+        tools:layout="@layout/fragment_music_taste"/>
 </navigation>

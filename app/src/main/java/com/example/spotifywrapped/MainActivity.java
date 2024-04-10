@@ -17,8 +17,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-    private String[] genres = {"Pop", "Country", "Jazz"};
-    private int[] genreStats = {5, 3, 1};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,21 +31,13 @@ public class MainActivity extends AppCompatActivity {
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                         R.id.navigation_home,
                         R.id.navigation_dashboard,
-                        R.id.navigation_notifications)
+                        R.id.navigation_notifications,
+                        R.id.navigation_music_taste)
                 .build();
         NavController navController =
                 Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-        // UserStory1
-        setUpRecyclerView();
-    }
-
-    private void setUpRecyclerView() {
-        RecyclerView recyclerView = findViewById(R.id.musicTasteList);
-        MusicTasteAdapter adapter = new MusicTasteAdapter(genres, genreStats);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 }
