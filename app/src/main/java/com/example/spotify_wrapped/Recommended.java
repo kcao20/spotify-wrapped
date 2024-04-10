@@ -21,6 +21,5 @@ public String getArtist() {
 }
 }
 private class TrackImage {
-
 }
 }
