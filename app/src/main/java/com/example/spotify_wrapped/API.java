@@ -1,9 +1,11 @@
 package com.example.spotify_wrapped;
 
 import android.util.Log;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -16,25 +18,27 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-public class API {
+public class API extends ViewModel {
 
     private final OkHttpClient mOkHttpClient = new OkHttpClient();
     private Call mCall;
 
     private String mAccessToken;
 
+    private MutableLiveData<JSONObject> data = new MutableLiveData<>();
+
     public API(@NonNull String accessToken) {
         mAccessToken = accessToken;
     }
 
-    public void onGetUserProfileClicked(TextView profileTextView) {
+    private void request(String url) {
         if (mAccessToken == null) {
             return;
         }
 
         // Create a request to get the user profile
         final Request request = new Request.Builder()
-                .url("https://api.spotify.com/v1/me")
+                .url(url)
                 .addHeader("Authorization", "Bearer " + mAccessToken)
                 .build();
 
@@ -51,12 +55,29 @@ public class API {
             public void onResponse(Call call, Response response) throws IOException {
                 try {
                     final JSONObject jsonObject = new JSONObject(response.body().string());
-                    profileTextView.setText(jsonObject.toString(2));
+                    data.postValue(jsonObject);
                 } catch (JSONException | IOException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
+                    Log.d("JSON", response.toString());
                 }
             }
         });
+    }
+
+    public void getUserProfile() {
+        request("https://api.spotify.com/v1/me");
+    }
+
+    public void getTopItems(String type) {
+        request(String.format("https://api.spotify.com/v1/me/top/%s", type));
+    }
+
+    public void logout() {
+        mAccessToken = null;
+    }
+
+    public LiveData<JSONObject> getData() {
+        return data;
     }
 
     private void cancelCall() {

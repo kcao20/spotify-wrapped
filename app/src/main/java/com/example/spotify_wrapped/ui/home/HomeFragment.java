@@ -2,24 +2,27 @@ package com.example.spotify_wrapped.ui.home;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.example.spotify_wrapped.API;
-import com.example.spotify_wrapped.LoginActivity;
 import com.example.spotify_wrapped.R;
 import com.example.spotify_wrapped.databinding.FragmentHomeBinding;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
 
 public class HomeFragment extends Fragment {
 
@@ -38,21 +41,36 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        TextView profileTextView = root.findViewById(R.id.response_text_view);
+        ImageButton imageBtn = binding.imageBtn;
+        TextView weclomeTextView = binding.welcomeTextView;
+        TextView profileTextView = binding.responseTextView;
 
-        Button profileBtn = root.findViewById(R.id.profile_btn);
-        Button logout = root.findViewById(R.id.logout);
+        Button profileBtn = binding.profileBtn;
 
-        profileBtn.setOnClickListener(v -> {
-            api.onGetUserProfileClicked(profileTextView);
+        api.getUserProfile();
+        api.getData().observe(getViewLifecycleOwner(), data -> {
+            try {
+                weclomeTextView.setText(
+                        String.format("Welcome, %s", data.getString("display_name")));
+                String imageUrl = data.getJSONArray("images").getJSONObject(1).getString("url");
+                Picasso.get().load(imageUrl).into(imageBtn);
+            } catch (JSONException e) {
+                Log.d("error", e.toString());
+            }
         });
 
-        logout.setOnClickListener(v -> {
-            if (homeViewModel.logout()) {
-                Toast.makeText(getContext(), "Logged out Successfully", Toast.LENGTH_SHORT)
-                        .show();
-                startActivity(new Intent(requireActivity(), LoginActivity.class));
-            }
+        profileBtn.setOnClickListener(v -> {
+            api.getData().observe(getViewLifecycleOwner(), data -> {
+                try {
+                    profileTextView.setText(data.toString(2));
+                } catch (JSONException e) {
+                    Log.d("error", e.toString());
+                }
+            });
+        });
+
+        imageBtn.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.homeToProfile);
         });
 
         return root;

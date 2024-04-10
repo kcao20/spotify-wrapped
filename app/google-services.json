@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "188262653068",
+    "project_id": "spotify-wrapped-58eb7",
+    "storage_bucket": "spotify-wrapped-58eb7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:188262653068:android:9233a3ae635031ea71afa9",
+        "android_client_info": {
+          "package_name": "com.example.spotify_wrapped"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "188262653068-fih8u4ff9s9rc5gieprfub801o23c3q6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.spotify_wrapped",
+            "certificate_hash": "ba0fdf076de204cea8d70cb8536751d0e108fa96"
+          }
+        },
+        {
+          "client_id": "188262653068-s093hedbidqejcb3gs6p1fiadhhkq6g4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSq9wRB4B5ne26dowZky2bFPwZ1vkVZQ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "188262653068-s093hedbidqejcb3gs6p1fiadhhkq6g4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
