@@ -1,14 +1,12 @@
 package com.example.spotify_wrapped;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import okhttp3.Call;
-import okhttp3.Callback;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -17,72 +15,67 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class API extends ViewModel {
 
+    private final Executor executor = Executors.newCachedThreadPool();
     private final OkHttpClient mOkHttpClient = new OkHttpClient();
     private Call mCall;
-
     private String mAccessToken;
-
-    private MutableLiveData<JSONObject> data = new MutableLiveData<>();
 
     public API(@NonNull String accessToken) {
         mAccessToken = accessToken;
     }
 
-    private void request(String url) {
+    private void request(String url, Map<String, String> params, MutableLiveData<JSONObject> data) {
         if (mAccessToken == null) {
             return;
         }
 
-        // Create a request to get the user profile
+        HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
+        if (params != null) {
+            for (Map.Entry<String, String> param : params.entrySet()) {
+                httpBuilder.addQueryParameter(param.getKey(), param.getValue());
+            }
+        }
+
         final Request request = new Request.Builder()
-                .url(url)
+                .url(httpBuilder.build())
                 .addHeader("Authorization", "Bearer " + mAccessToken)
                 .build();
 
-        cancelCall();
         mCall = mOkHttpClient.newCall(request);
 
-        mCall.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d("HTTP", "Failed to fetch data: " + e);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                try {
-                    final JSONObject jsonObject = new JSONObject(response.body().string());
-                    data.postValue(jsonObject);
-                } catch (JSONException | IOException e) {
-                    Log.d("JSON", "Failed to parse data: " + e);
-                    Log.d("JSON", response.toString());
-                }
+        executor.execute(() -> {
+            try {
+                Response response = mCall.execute();
+                final JSONObject jsonObject = new JSONObject(response.body().string());
+                data.postValue(jsonObject);
+            } catch (IOException | JSONException e) {
+                throw new RuntimeException(e);
             }
         });
     }
 
-    public void getUserProfile() {
-        request("https://api.spotify.com/v1/me");
+    public LiveData<JSONObject> makeRequest(String url, Map<String, String> params) {
+        MutableLiveData<JSONObject> liveData = new MutableLiveData<>();
+        request(url, params, liveData);
+        return liveData;
     }
 
-    public void getTopItems(String type) {
-        request(String.format("https://api.spotify.com/v1/me/top/%s", type));
+    public LiveData<JSONObject> getUserProfile() {
+        return makeRequest("https://api.spotify.com/v1/me", null);
+    }
+
+    public LiveData<JSONObject> getTopItems(String type, Map<String, String> params) {
+        String url = String.format("https://api.spotify.com/v1/me/top/%s", type);
+        return makeRequest(url, params);
     }
 
     public void logout() {
         mAccessToken = null;
-    }
-
-    public LiveData<JSONObject> getData() {
-        return data;
-    }
-
-    private void cancelCall() {
-        if (mCall != null) {
-            mCall.cancel();
-        }
     }
 }

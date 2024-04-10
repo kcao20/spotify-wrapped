@@ -47,8 +47,7 @@ public class DashboardFragment extends Fragment {
         final TextView artistsTextView = binding.textView;
 
         artistsBtn.setOnClickListener(v -> {
-            api.getTopItems("artists");
-            api.getData().observe(getViewLifecycleOwner(), data -> {
+            api.getTopItems("artists", null).observe(getViewLifecycleOwner(), data -> {
                 try {
                     ArrayList<String> artists = new ArrayList<>();
                     JSONArray items = data.getJSONArray("items");
@@ -64,8 +63,7 @@ public class DashboardFragment extends Fragment {
         });
 
         tracksBtn.setOnClickListener(v -> {
-            api.getTopItems("tracks");
-            api.getData().observe(getViewLifecycleOwner(), data -> {
+            api.getTopItems("tracks", null).observe(getViewLifecycleOwner(), data -> {
                 try {
                     ArrayList<String> artists = new ArrayList<>();
                     JSONArray items = data.getJSONArray("items");

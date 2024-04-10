@@ -48,8 +48,6 @@ public class ProfileFragment extends Fragment {
         Button changeLoginDetails = binding.changeLoginDetails;
         Button delete = binding.delete;
 
-        api.getUserProfile();
-
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
         unlink.setOnClickListener(v -> {
