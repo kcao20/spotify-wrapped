@@ -34,5 +34,17 @@ public class MainActivity extends AppCompatActivity {
                 Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+        navView.setOnItemSelectedListener(item -> {
+            NavigationUI.onNavDestinationSelected(item, navController);
+            navController.popBackStack(item.getItemId(), false);
+            return true;
+        });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController =
+                Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
+        return navController.navigateUp() || super.onSupportNavigateUp();
     }
 }
