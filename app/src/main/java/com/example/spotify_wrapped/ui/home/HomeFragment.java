@@ -47,8 +47,7 @@ public class HomeFragment extends Fragment {
 
         Button profileBtn = binding.profileBtn;
 
-        api.getUserProfile();
-        api.getData().observe(getViewLifecycleOwner(), data -> {
+        api.getUserProfile().observe(getViewLifecycleOwner(), data -> {
             try {
                 weclomeTextView.setText(
                         String.format("Welcome, %s", data.getString("display_name")));
@@ -60,7 +59,7 @@ public class HomeFragment extends Fragment {
         });
 
         profileBtn.setOnClickListener(v -> {
-            api.getData().observe(getViewLifecycleOwner(), data -> {
+            api.getUserProfile().observe(getViewLifecycleOwner(), data -> {
                 try {
                     profileTextView.setText(data.toString(2));
                 } catch (JSONException e) {
