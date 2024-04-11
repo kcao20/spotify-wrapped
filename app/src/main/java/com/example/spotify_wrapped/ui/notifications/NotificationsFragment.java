@@ -1,4 +1,4 @@
-package com.example.spotifywrapped.ui.notifications;
+package com.example.spotify_wrapped.ui.notifications;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.spotifywrapped.databinding.FragmentNotificationsBinding;
+import com.example.spotify_wrapped.databinding.FragmentNotificationsBinding;
 
 public class NotificationsFragment extends Fragment {
 
