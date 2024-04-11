@@ -12,8 +12,7 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/homeToProfile"
-            app:destination="@id/profileFragment"
-            app:popUpToInclusive="true"/>
+            app:destination="@id/profileFragment" />
     </fragment>
 
     <fragment
@@ -59,8 +58,10 @@
         tools:layout="@layout/fragment_profile">
     <action
         android:id="@+id/profileToVerifyLogin"
-        app:destination="@id/ReAuthFragment"
-        app:popUpToInclusive="true"/>
+        app:destination="@id/ReAuthFragment"/>
+    <action
+        android:id="@+id/profileToHome"
+        app:destination="@id/navigation_home" />
     </fragment>
 
 </navigation>
