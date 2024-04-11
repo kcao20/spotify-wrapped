@@ -1,5 +1,7 @@
 package com.example.spotify_wrapped;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -54,12 +56,14 @@ public class API extends ViewModel {
         mCall = mOkHttpClient.newCall(request);
 
         executor.execute(() -> {
+            Response response = null;
             try {
-                Response response = mCall.execute();
+                response = mCall.execute();
                 final JSONObject jsonObject = new JSONObject(response.body().string());
                 data.postValue(jsonObject);
             } catch (IOException | JSONException e) {
-                throw new RuntimeException(e);
+                Log.d("API", e.toString());
+                Log.d("API", response.toString());
             }
         });
     }

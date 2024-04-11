@@ -21,15 +21,13 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.json.JSONObject;
 
 public class Page2 extends Fragment {
 
     private StoryPage1Binding binding;
     private SharedPreferences sharedPreferences;
-    private String time_span;
+    private JSONObject data;
 
     private TextView textView1;
     private ImageView imageView1;
@@ -42,8 +40,8 @@ public class Page2 extends Fragment {
     private TextView textView5;
     private ImageView imageView5;
 
-    public Page2(String time_span) {
-        this.time_span = time_span;
+    public Page2(JSONObject data) {
+        this.data = data;
     }
 
     @Override
@@ -75,16 +73,11 @@ public class Page2 extends Fragment {
         textView5 = binding.textView5;
         imageView5 = binding.imageView5;
 
-        Map<String, String> queries = new HashMap<>();
-        queries.put("limit", "5");
-        queries.put("time_range", time_span);
-        API.getTopItems("tracks", queries).observe(getViewLifecycleOwner(), data -> {
-            try {
-                populateTracks(data.getJSONArray("items"));
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        try {
+            populateTracks(data.getJSONArray("items"));
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
 
         return binding.getRoot();
     }
