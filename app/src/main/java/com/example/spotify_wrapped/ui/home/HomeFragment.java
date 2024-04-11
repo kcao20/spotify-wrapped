@@ -69,7 +69,7 @@ public class HomeFragment extends Fragment {
         });
 
         imageBtn.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.homeToProfile);
+            Navigation.findNavController(v).navigate(R.id.profileFragment);
         });
 
         return root;
