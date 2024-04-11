@@ -3,16 +3,17 @@
 ## Setup
 ___
 ### Environment Variables
-Modify env file at ```app/src/main/assets/env```
-```
-CLIENT_ID=
-CLIENT_SECRET=
-REDIRECT_URI=
-```
-Make sure to also modify build.gradle with your own redirect uri
-```
-manifestPlaceholders = [redirectSchemeName: "spotify-wrapped", redirectHostName: "auth"]
-```
+1. Create env file at ```app/src/main/assets/env``` or rename ```app/src/main/assets/env.example``` to env
+2. Fill in variables
+    ```
+   CLIENT_ID=
+   CLIENT_SECRET=
+   REDIRECT_URI=
+   ```
+3. Make sure to also modify build.gradle with your own redirect uri
+    ```
+    manifestPlaceholders = [redirectSchemeName: "spotify-wrapped", redirectHostName: "auth"]
+    ```
 ## User Stories
 ___
 ### Base User Stories
