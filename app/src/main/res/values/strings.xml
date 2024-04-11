@@ -4,4 +4,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="shared_pref_key">spotify</string>
+    <string name="one_month">One Month</string>
+    <string name="_6_months">6 Months</string>
+    <string name="one_year">One Year</string>
 </resources>
