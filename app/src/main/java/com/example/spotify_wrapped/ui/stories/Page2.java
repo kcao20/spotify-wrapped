@@ -1,7 +1,5 @@
 package com.example.spotify_wrapped.ui.stories;
 
-import static android.content.Context.MODE_PRIVATE;
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,22 +12,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.spotify_wrapped.API;
-import com.example.spotify_wrapped.R;
-import com.example.spotify_wrapped.databinding.StoryPage1Binding;
+import com.example.spotify_wrapped.databinding.StoryType1Binding;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.json.JSONObject;
 
 public class Page2 extends Fragment {
 
-    private StoryPage1Binding binding;
+    private StoryType1Binding binding;
     private SharedPreferences sharedPreferences;
-    private String time_span;
+    private JSONObject data;
 
     private TextView textView1;
     private ImageView imageView1;
@@ -42,19 +36,13 @@ public class Page2 extends Fragment {
     private TextView textView5;
     private ImageView imageView5;
 
-    public Page2(String time_span) {
-        this.time_span = time_span;
+    public Page2(JSONObject data) {
+        this.data = data;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferences = requireContext()
-                .getSharedPreferences(
-                        requireContext().getString(R.string.shared_pref_key), MODE_PRIVATE);
-        if (!API.isInstance()) {
-            API.setAccessToken(sharedPreferences.getString("access_token", null));
-        }
     }
 
     @Nullable @Override
@@ -62,29 +50,28 @@ public class Page2 extends Fragment {
             @NonNull LayoutInflater inflater,
             @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        binding = StoryPage1Binding.inflate(inflater, container, false);
+        binding = StoryType1Binding.inflate(inflater, container, false);
 
-        textView1 = binding.textView1;
+        TextView titleTextView = binding.titleTextView;
+        titleTextView.setText("Your top tracks");
+
+        textView1 = binding.item1;
         imageView1 = binding.imageView1;
-        textView2 = binding.textView2;
+        textView2 = binding.item2;
         imageView2 = binding.imageView2;
-        textView3 = binding.textView3;
+        textView3 = binding.item3;
         imageView3 = binding.imageView3;
-        textView4 = binding.textView4;
+        textView4 = binding.item4;
         imageView4 = binding.imageView4;
-        textView5 = binding.textView5;
+        textView5 = binding.item5;
         imageView5 = binding.imageView5;
+        ;
 
-        Map<String, String> queries = new HashMap<>();
-        queries.put("limit", "5");
-        queries.put("time_range", time_span);
-        API.getTopItems("tracks", queries).observe(getViewLifecycleOwner(), data -> {
-            try {
-                populateTracks(data.getJSONArray("items"));
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        try {
+            populateTracks(data.getJSONArray("items"));
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
 
         return binding.getRoot();
     }

@@ -5,11 +5,17 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.spotify_wrapped.databinding.ActivityStoryBinding;
 import com.example.spotify_wrapped.ui.stories.StoryAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class StoryActivity extends AppCompatActivity {
 
@@ -23,18 +29,54 @@ public class StoryActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         Intent intent = getIntent();
-        String time_span = "long_term";
-        if (intent != null) {
-            time_span = intent.getStringExtra("time_span");
-        }
+        String time_span = intent.getStringExtra("time_span");
 
         FloatingActionButton close = binding.floatingActionButton;
         close.setOnClickListener(v -> {
             startActivity(new Intent(StoryActivity.this, MainActivity.class));
         });
 
+        MutableLiveData<Map<String, JSONObject>> spotifyData = new MutableLiveData<>();
+
+        API.getUserProfile().observe(this, data -> {
+            Map<String, JSONObject> map = spotifyData.getValue();
+            if (map == null) {
+                map = new HashMap<>();
+            }
+            map.put("profile", data);
+            spotifyData.setValue(map);
+        });
+
+        Map<String, String> queries = new HashMap<>();
+        queries.put("limit", "5");
+        queries.put("time_range", time_span);
+        API.getTopItems("artists", queries).observe(this, data -> {
+            Map<String, JSONObject> map = spotifyData.getValue();
+            if (map == null) {
+                map = new HashMap<>();
+            }
+            map.put("artists", data);
+            spotifyData.setValue(map);
+        });
+
+        queries = new HashMap<>();
+        queries.put("limit", "5");
+        queries.put("time_range", time_span);
+        API.getTopItems("tracks", queries).observe(this, data -> {
+            Map<String, JSONObject> map = spotifyData.getValue();
+            if (map == null) {
+                map = new HashMap<>();
+            }
+            map.put("tracks", data);
+            spotifyData.setValue(map);
+        });
+
         ViewPager2 viewPager = binding.pager;
-        StoryAdapter storyAdapter = new StoryAdapter(this, time_span);
-        viewPager.setAdapter(storyAdapter);
+        spotifyData.observe(this, data -> {
+            if (data.size() == 3) {
+                StoryAdapter storyAdapter = new StoryAdapter(this, data, time_span);
+                viewPager.setAdapter(storyAdapter);
+            }
+        });
     }
 }
