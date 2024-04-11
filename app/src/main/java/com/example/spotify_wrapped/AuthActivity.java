@@ -56,7 +56,10 @@ public class AuthActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (!dataSnapshot.exists()) {
-                                usersRef.child(uid).child("email").setValue(userEmail);
+                                usersRef.child(uid)
+                                        .child("user_data")
+                                        .child("email")
+                                        .setValue(userEmail);
                             }
                         }
 

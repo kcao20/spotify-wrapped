@@ -86,12 +86,20 @@ public class LinkActivity extends AppCompatActivity {
             usersRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    String accessToken = dataSnapshot.child("access_token").getValue(String.class);
+                    String accessToken = dataSnapshot
+                            .child("user_data")
+                            .child("access_token")
+                            .getValue(String.class);
                     Log.d("DB", "Access Token: " + accessToken);
-                    Long expiresAt = dataSnapshot.child("expires_at").getValue(Long.class);
+                    Long expiresAt = dataSnapshot
+                            .child("user_data")
+                            .child("expires_at")
+                            .getValue(Long.class);
                     Log.d("DB", "Expires At: " + expiresAt);
-                    String refreshToken =
-                            dataSnapshot.child("refresh_token").getValue(String.class);
+                    String refreshToken = dataSnapshot
+                            .child("user_data")
+                            .child("refresh_token")
+                            .getValue(String.class);
                     Log.d("DB", "Refresh Token: " + refreshToken);
                     if (accessToken != null && expiresAt != null && refreshToken != null) {
                         editor.putString("access_token", accessToken);
@@ -204,12 +212,15 @@ public class LinkActivity extends AppCompatActivity {
                     FirebaseUser user = firebaseAuth.getCurrentUser();
                     String uid = user.getUid();
                     usersRef.child(uid)
+                            .child("user_data")
                             .child("access_token")
                             .setValue(jsonObject.getString("access_token"));
                     usersRef.child(uid)
+                            .child("user_data")
                             .child("refresh_token")
                             .setValue(jsonObject.getString("refresh_token"));
                     usersRef.child(uid)
+                            .child("user_data")
                             .child("expires_at")
                             .setValue(currentTimestamp
                                     + Duration.ofSeconds(jsonObject.getInt("expires_in"))

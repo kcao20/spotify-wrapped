@@ -76,6 +76,7 @@ public class HomeFragment extends Fragment {
         start.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), StoryActivity.class);
             intent.putExtra("time_span", time_span_spinner.getSelectedItem().toString());
+            intent.putExtra("wrapped_id", "new");
             startActivity(intent);
         });
 
