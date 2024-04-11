@@ -38,7 +38,9 @@ public class ProfileFragment extends Fragment {
         sharedPreferences = requireContext()
                 .getSharedPreferences(
                         requireContext().getString(R.string.shared_pref_key), MODE_PRIVATE);
-        api = new API(sharedPreferences.getString("access_token", null));
+        if (!API.isInstance()) {
+            API.setAccessToken(sharedPreferences.getString("access_token", null));
+        }
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -52,7 +54,7 @@ public class ProfileFragment extends Fragment {
 
         unlink.setOnClickListener(v -> {
             if (homeViewModel.logout()) {
-                api.logout();
+                API.logout();
                 DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
                 String uid = firebaseAuth.getCurrentUser().getUid();
                 usersRef.child(uid).child("refresh_token").removeValue();
@@ -65,7 +67,7 @@ public class ProfileFragment extends Fragment {
         });
 
         logout.setOnClickListener(v -> {
-            api.logout();
+            API.logout();
             firebaseAuth.signOut();
             startActivity(new Intent(requireActivity(), AuthActivity.class));
         });

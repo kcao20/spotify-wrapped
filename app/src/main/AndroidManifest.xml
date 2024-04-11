@@ -29,6 +29,7 @@
             android:name=".LinkActivity"
             android:exported="true">
         </activity>
+        <activity android:name=".StoryActivity" />
     </application>
 
 </manifest>
