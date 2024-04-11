@@ -15,19 +15,24 @@ import com.example.spotify_wrapped.databinding.WelcomePageBinding;
 
 import org.json.JSONObject;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class WelcomePage extends Fragment {
 
     private WelcomePageBinding binding;
     private String name;
     private String time_span;
+    private LocalDate date;
 
-    public WelcomePage(JSONObject data, String time_span) {
+    public WelcomePage(JSONObject data, String time_span, LocalDate date) {
         try {
             name = data.getString("display_name");
         } catch (Exception e) {
             Log.d("JSON", e.toString());
         }
         this.time_span = time_span;
+        this.date = date;
     }
 
     @Override
@@ -44,6 +49,12 @@ public class WelcomePage extends Fragment {
 
         TextView greeting = binding.greetingTextView;
         greeting.setText(String.format("Hello %s", name));
+
+        TextView dateView = binding.dateTextView;
+        if (date != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+            dateView.setText(String.format("Generated on %s", date.format(formatter)));
+        }
 
         TextView scope = binding.textView;
         switch (time_span) {
