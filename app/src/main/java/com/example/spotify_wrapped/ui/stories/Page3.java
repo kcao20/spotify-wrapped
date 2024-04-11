@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.spotify_wrapped.databinding.StoryPage3Binding;
+import com.example.spotify_wrapped.databinding.StoryType2Binding;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class Page3 extends Fragment {
 
-    private StoryPage3Binding binding;
+    private StoryType2Binding binding;
     private JSONArray artists;
     private JSONArray tracks;
 
@@ -45,7 +45,7 @@ public class Page3 extends Fragment {
             @NonNull LayoutInflater inflater,
             @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        binding = StoryPage3Binding.inflate(inflater, container, false);
+        binding = StoryType2Binding.inflate(inflater, container, false);
 
         ImageView artistImageView = binding.artistImageView;
         TextView artistsTextView = binding.artistsTextView;

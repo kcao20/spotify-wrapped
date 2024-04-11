@@ -29,10 +29,7 @@ public class StoryActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         Intent intent = getIntent();
-        String time_span = "long_term";
-        if (intent != null) {
-            time_span = intent.getStringExtra("time_span");
-        }
+        String time_span = intent.getStringExtra("time_span");
 
         FloatingActionButton close = binding.floatingActionButton;
         close.setOnClickListener(v -> {
@@ -40,6 +37,15 @@ public class StoryActivity extends AppCompatActivity {
         });
 
         MutableLiveData<Map<String, JSONObject>> spotifyData = new MutableLiveData<>();
+
+        API.getUserProfile().observe(this, data -> {
+            Map<String, JSONObject> map = spotifyData.getValue();
+            if (map == null) {
+                map = new HashMap<>();
+            }
+            map.put("profile", data);
+            spotifyData.setValue(map);
+        });
 
         Map<String, String> queries = new HashMap<>();
         queries.put("limit", "5");
@@ -67,8 +73,8 @@ public class StoryActivity extends AppCompatActivity {
 
         ViewPager2 viewPager = binding.pager;
         spotifyData.observe(this, data -> {
-            if (data.size() == 2) {
-                StoryAdapter storyAdapter = new StoryAdapter(this, data);
+            if (data.size() == 3) {
+                StoryAdapter storyAdapter = new StoryAdapter(this, data, time_span);
                 viewPager.setAdapter(storyAdapter);
             }
         });

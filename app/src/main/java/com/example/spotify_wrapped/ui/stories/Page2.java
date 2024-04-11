@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.spotify_wrapped.databinding.StoryPage1Binding;
+import com.example.spotify_wrapped.databinding.StoryType1Binding;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -21,7 +21,7 @@ import org.json.JSONObject;
 
 public class Page2 extends Fragment {
 
-    private StoryPage1Binding binding;
+    private StoryType1Binding binding;
     private SharedPreferences sharedPreferences;
     private JSONObject data;
 
@@ -50,18 +50,22 @@ public class Page2 extends Fragment {
             @NonNull LayoutInflater inflater,
             @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        binding = StoryPage1Binding.inflate(inflater, container, false);
+        binding = StoryType1Binding.inflate(inflater, container, false);
 
-        textView1 = binding.textView1;
+        TextView titleTextView = binding.titleTextView;
+        titleTextView.setText("Your top tracks");
+
+        textView1 = binding.item1;
         imageView1 = binding.imageView1;
-        textView2 = binding.textView2;
+        textView2 = binding.item2;
         imageView2 = binding.imageView2;
-        textView3 = binding.textView3;
+        textView3 = binding.item3;
         imageView3 = binding.imageView3;
-        textView4 = binding.textView4;
+        textView4 = binding.item4;
         imageView4 = binding.imageView4;
-        textView5 = binding.textView5;
+        textView5 = binding.item5;
         imageView5 = binding.imageView5;
+        ;
 
         try {
             populateTracks(data.getJSONArray("items"));
