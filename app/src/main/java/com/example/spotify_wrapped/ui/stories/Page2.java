@@ -1,7 +1,5 @@
 package com.example.spotify_wrapped.ui.stories;
 
-import static android.content.Context.MODE_PRIVATE;
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,8 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.spotify_wrapped.API;
-import com.example.spotify_wrapped.R;
 import com.example.spotify_wrapped.databinding.StoryPage1Binding;
 import com.squareup.picasso.Picasso;
 
@@ -47,12 +43,6 @@ public class Page2 extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferences = requireContext()
-                .getSharedPreferences(
-                        requireContext().getString(R.string.shared_pref_key), MODE_PRIVATE);
-        if (!API.isInstance()) {
-            API.setAccessToken(sharedPreferences.getString("access_token", null));
-        }
     }
 
     @Nullable @Override

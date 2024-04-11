@@ -1,9 +1,7 @@
 package com.example.spotify_wrapped.ui.stories;
 
-import static android.content.Context.MODE_PRIVATE;
-
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.spotify_wrapped.API;
-import com.example.spotify_wrapped.R;
 import com.example.spotify_wrapped.databinding.StoryPage1Binding;
 import com.squareup.picasso.Picasso;
 
@@ -26,8 +22,7 @@ import org.json.JSONObject;
 public class Page1 extends Fragment {
 
     private StoryPage1Binding binding;
-    private SharedPreferences sharedPreferences;
-    private JSONObject data;
+    private JSONArray tracks;
 
     private TextView textView1;
     private ImageView imageView1;
@@ -41,18 +36,16 @@ public class Page1 extends Fragment {
     private ImageView imageView5;
 
     public Page1(JSONObject data) {
-        this.data = data;
+        try {
+            tracks = data.getJSONArray("items");
+        } catch (Exception e) {
+            Log.d("JSON", e.toString());
+        }
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferences = requireContext()
-                .getSharedPreferences(
-                        requireContext().getString(R.string.shared_pref_key), MODE_PRIVATE);
-        if (!API.isInstance()) {
-            API.setAccessToken(sharedPreferences.getString("access_token", null));
-        }
     }
 
     @Nullable @Override
@@ -74,9 +67,9 @@ public class Page1 extends Fragment {
         imageView5 = binding.imageView5;
 
         try {
-            populateArtists(data.getJSONArray("items"));
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
+            populateArtists(tracks);
+        } catch (Exception e) {
+            Log.d("JSON", e.toString());
         }
 
         return binding.getRoot();

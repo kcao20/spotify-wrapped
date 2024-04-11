@@ -49,7 +49,7 @@ public class StoryActivity extends AppCompatActivity {
             if (map == null) {
                 map = new HashMap<>();
             }
-            map.put("artist", data);
+            map.put("artists", data);
             spotifyData.setValue(map);
         });
 
@@ -61,7 +61,7 @@ public class StoryActivity extends AppCompatActivity {
             if (map == null) {
                 map = new HashMap<>();
             }
-            map.put("track", data);
+            map.put("tracks", data);
             spotifyData.setValue(map);
         });
 

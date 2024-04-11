@@ -23,14 +23,15 @@ public class StoryAdapter extends FragmentStateAdapter {
     @NonNull @Override
     public Fragment createFragment(int position) {
         return switch (position) {
-            case 0 -> new Page1(data.get("artist"));
-            case 1 -> new Page2(data.get("track"));
+            case 0 -> new Page1(data.get("artists"));
+            case 1 -> new Page2(data.get("tracks"));
+            case 2 -> new Page3(data);
             default -> null;
         };
     }
 
     @Override
     public int getItemCount() {
-        return 2;
+        return 3;
     }
 }
