@@ -69,7 +69,9 @@ public class ProfileFragment extends Fragment {
         logout.setOnClickListener(v -> {
             API.logout();
             firebaseAuth.signOut();
+            homeViewModel.logout();
             startActivity(new Intent(requireActivity(), AuthActivity.class));
+            getActivity().finish();
         });
 
         Bundle args = new Bundle();
