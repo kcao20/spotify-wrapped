@@ -34,13 +34,14 @@ public class StoryAdapter extends FragmentStateAdapter {
             case 0 -> new WelcomePage(data.get("profile"), time_span, date);
             case 1 -> new Page1(data.get("artists"));
             case 2 -> new Page2(data.get("tracks"));
-            case 3 -> new Page3(data);
+            case 3 -> new GenrePage(data.get("artists"));
+            case 4 -> new SummaryPage(data);
             default -> null;
         };
     }
 
     @Override
     public int getItemCount() {
-        return 4;
+        return 5;
     }
 }
