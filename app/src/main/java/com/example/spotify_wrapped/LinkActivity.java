@@ -75,12 +75,15 @@ public class LinkActivity extends AppCompatActivity {
 
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
 
+        Log.d("JSON", sharedPreferences.getString("access_token", ""));
+
         if (sharedPreferences.contains("access_token")
                 || sharedPreferences.contains("refresh_token")) {
             if (System.currentTimeMillis() > sharedPreferences.getLong("expires_at", 0)) {
                 refreshAccessToken();
             } else {
                 startActivity(new Intent(LinkActivity.this, MainActivity.class));
+                finish();
             }
         } else {
             usersRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -104,12 +107,15 @@ public class LinkActivity extends AppCompatActivity {
                     if (accessToken != null && expiresAt != null && refreshToken != null) {
                         editor.putString("access_token", accessToken);
                         editor.putString("refresh_token", refreshToken);
-                        long currentTimestamp = System.currentTimeMillis();
-                        editor.putLong(
-                                "expires_at",
-                                currentTimestamp + Duration.ofSeconds(expiresAt).toMillis());
+                        editor.putLong("expires_at", expiresAt);
                         editor.apply();
+                        if (System.currentTimeMillis()
+                                > sharedPreferences.getLong("expires_at", 0)) {
+                            Log.d("REFRESH", "REFRESHING!!!");
+                            refreshAccessToken();
+                        }
                         startActivity(new Intent(LinkActivity.this, MainActivity.class));
+                        finish();
                     }
                 }
 
@@ -161,7 +167,7 @@ public class LinkActivity extends AppCompatActivity {
 
                     // Most likely auth flow was cancelled
                 default:
-                    Log.d("APP", "fuckery");
+                    Log.d("APP", "kevin was here");
             }
         }
     }
@@ -207,28 +213,12 @@ public class LinkActivity extends AppCompatActivity {
                                     + Duration.ofSeconds(jsonObject.getInt("expires_in"))
                                             .toMillis());
                     editor.apply();
-                    DatabaseReference usersRef =
-                            FirebaseDatabase.getInstance().getReference("users");
-                    FirebaseUser user = firebaseAuth.getCurrentUser();
-                    String uid = user.getUid();
-                    usersRef.child(uid)
-                            .child("user_data")
-                            .child("access_token")
-                            .setValue(jsonObject.getString("access_token"));
-                    usersRef.child(uid)
-                            .child("user_data")
-                            .child("refresh_token")
-                            .setValue(jsonObject.getString("refresh_token"));
-                    usersRef.child(uid)
-                            .child("user_data")
-                            .child("expires_at")
-                            .setValue(currentTimestamp
-                                    + Duration.ofSeconds(jsonObject.getInt("expires_in"))
-                                            .toMillis());
+                    populateDB(jsonObject);
 
                     startActivity(new Intent(LinkActivity.this, MainActivity.class));
+                    finish();
                 } catch (JSONException e) {
-                    throw new RuntimeException(e);
+                    Log.d("JSON ERROR", e.toString());
                 }
             }
         });
@@ -266,14 +256,42 @@ public class LinkActivity extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(response.body().string());
                     editor.putString("access_token", jsonObject.getString("access_token"));
+                    long currentTimestamp = System.currentTimeMillis();
+                    editor.putLong(
+                            "expires_at",
+                            currentTimestamp
+                                    + Duration.ofSeconds(jsonObject.getInt("expires_in"))
+                                            .toMillis());
                     editor.apply();
+                    populateDB(jsonObject);
 
                     startActivity(new Intent(LinkActivity.this, MainActivity.class));
+                    finish();
                 } catch (JSONException | IOException e) {
                     Log.d("HTTP", "Failed to parse token response: " + e.getMessage());
                 }
             }
         });
+    }
+
+    public void populateDB(JSONObject jsonObject) throws JSONException {
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        String uid = user.getUid();
+        long currentTimestamp = System.currentTimeMillis();
+        usersRef.child(uid)
+                .child("user_data")
+                .child("access_token")
+                .setValue(jsonObject.getString("access_token"));
+        usersRef.child(uid)
+                .child("user_data")
+                .child("refresh_token")
+                .setValue(jsonObject.getString("refresh_token"));
+        usersRef.child(uid)
+                .child("user_data")
+                .child("expires_at")
+                .setValue(currentTimestamp
+                        + Duration.ofSeconds(jsonObject.getInt("expires_in")).toMillis());
     }
 
     private void cancelCall() {
