@@ -18,7 +18,7 @@ ___
 ___
 ### Base User Stories
 - [x] User Story #1
-- [ ] User Story #2
+- [x] User Story #2
 ### Optional
 - [ ] Friend View (3/+2)
 - [ ] Holiday Wrapped (5/+2)

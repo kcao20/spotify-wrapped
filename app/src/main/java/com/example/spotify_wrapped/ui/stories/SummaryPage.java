@@ -20,13 +20,13 @@ import org.json.JSONObject;
 
 import java.util.Map;
 
-public class Page3 extends Fragment {
+public class SummaryPage extends Fragment {
 
     private StoryType2Binding binding;
     private JSONArray artists;
     private JSONArray tracks;
 
-    public Page3(Map<String, JSONObject> data) {
+    public SummaryPage(Map<String, JSONObject> data) {
         try {
             artists = data.get("artists").getJSONArray("items");
             tracks = data.get("tracks").getJSONArray("items");
@@ -51,6 +51,8 @@ public class Page3 extends Fragment {
         TextView artistsTextView = binding.artistsTextView;
         TextView tracksTextView = binding.tracksTextView;
 
+        Log.d("summary", "loaded");
+
         try {
             Picasso.get()
                     .load(artists.getJSONObject(0)
@@ -59,7 +61,8 @@ public class Page3 extends Fragment {
                             .getString("url"))
                     .into(artistImageView);
             StringBuilder topArtists = new StringBuilder();
-            for (int i = 0; i < artists.length(); i++) {
+            int end = Math.min(5, artists.length());
+            for (int i = 0; i < end; i++) {
                 String artist =
                         String.format("%d %s\n", i + 1, artists.getJSONObject(i).getString("name"));
                 topArtists.append(artist);
@@ -67,7 +70,8 @@ public class Page3 extends Fragment {
             artistsTextView.setText(topArtists.toString());
 
             StringBuilder topTracks = new StringBuilder();
-            for (int i = 0; i < tracks.length(); i++) {
+            end = Math.min(5, tracks.length());
+            for (int i = 0; i < end; i++) {
                 String track =
                         String.format("%d %s\n", i + 1, tracks.getJSONObject(i).getString("name"));
                 topTracks.append(track);

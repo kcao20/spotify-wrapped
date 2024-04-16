@@ -77,52 +77,55 @@ public class Page2 extends Fragment {
     }
 
     private void populateTracks(JSONArray items) throws JSONException {
-        switch (items.length()) {
-            case 5:
-                textView5.setText(items.getJSONObject(4).getString("name"));
-                Picasso.get()
-                        .load(items.getJSONObject(4)
-                                .getJSONObject("album")
-                                .getJSONArray("images")
-                                .getJSONObject(0)
-                                .getString("url"))
-                        .into(imageView5);
-            case 4:
-                textView4.setText(items.getJSONObject(3).getString("name"));
-                Picasso.get()
-                        .load(items.getJSONObject(3)
-                                .getJSONObject("album")
-                                .getJSONArray("images")
-                                .getJSONObject(0)
-                                .getString("url"))
-                        .into(imageView4);
-            case 3:
-                textView3.setText(items.getJSONObject(2).getString("name"));
-                Picasso.get()
-                        .load(items.getJSONObject(2)
-                                .getJSONObject("album")
-                                .getJSONArray("images")
-                                .getJSONObject(0)
-                                .getString("url"))
-                        .into(imageView3);
-            case 2:
-                textView2.setText(items.getJSONObject(1).getString("name"));
-                Picasso.get()
-                        .load(items.getJSONObject(1)
-                                .getJSONObject("album")
-                                .getJSONArray("images")
-                                .getJSONObject(0)
-                                .getString("url"))
-                        .into(imageView2);
-            case 1:
-                textView1.setText(items.getJSONObject(0).getString("name"));
-                Picasso.get()
-                        .load(items.getJSONObject(0)
-                                .getJSONObject("album")
-                                .getJSONArray("images")
-                                .getJSONObject(0)
-                                .getString("url"))
-                        .into(imageView1);
+        if (items.length() >= 5) {
+            textView5.setText(items.getJSONObject(4).getString("name"));
+            Picasso.get()
+                    .load(items.getJSONObject(4)
+                            .getJSONObject("album")
+                            .getJSONArray("images")
+                            .getJSONObject(0)
+                            .getString("url"))
+                    .into(imageView5);
+        }
+        if (items.length() >= 4) {
+            textView4.setText(items.getJSONObject(3).getString("name"));
+            Picasso.get()
+                    .load(items.getJSONObject(3)
+                            .getJSONObject("album")
+                            .getJSONArray("images")
+                            .getJSONObject(0)
+                            .getString("url"))
+                    .into(imageView4);
+        }
+        if (items.length() >= 3) {
+            textView3.setText(items.getJSONObject(2).getString("name"));
+            Picasso.get()
+                    .load(items.getJSONObject(2)
+                            .getJSONObject("album")
+                            .getJSONArray("images")
+                            .getJSONObject(0)
+                            .getString("url"))
+                    .into(imageView3);
+        }
+        if (items.length() >= 2) {
+            textView2.setText(items.getJSONObject(1).getString("name"));
+            Picasso.get()
+                    .load(items.getJSONObject(1)
+                            .getJSONObject("album")
+                            .getJSONArray("images")
+                            .getJSONObject(0)
+                            .getString("url"))
+                    .into(imageView2);
+        }
+        if (items.length() >= 1) {
+            textView1.setText(items.getJSONObject(0).getString("name"));
+            Picasso.get()
+                    .load(items.getJSONObject(0)
+                            .getJSONObject("album")
+                            .getJSONArray("images")
+                            .getJSONObject(0)
+                            .getString("url"))
+                    .into(imageView1);
         }
     }
 }

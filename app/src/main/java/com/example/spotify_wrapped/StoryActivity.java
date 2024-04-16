@@ -12,7 +12,6 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.spotify_wrapped.databinding.ActivityStoryBinding;
 import com.example.spotify_wrapped.ui.stories.StoryAdapter;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -52,11 +51,6 @@ public class StoryActivity extends AppCompatActivity {
             time_span = "long_term";
             wrappedId = "new";
         }
-
-        FloatingActionButton close = binding.floatingActionButton;
-        close.setOnClickListener(v -> {
-            startActivity(new Intent(StoryActivity.this, MainActivity.class));
-        });
 
         MutableLiveData<Map<String, JSONObject>> spotifyData = new MutableLiveData<>();
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
@@ -102,7 +96,7 @@ public class StoryActivity extends AppCompatActivity {
             });
 
             Map<String, String> queries = new HashMap<>();
-            queries.put("limit", "5");
+            queries.put("limit", "50");
             queries.put("time_range", time_span);
             API.getTopItems("artists", queries).observe(this, data -> {
                 Map<String, JSONObject> map = spotifyData.getValue();
