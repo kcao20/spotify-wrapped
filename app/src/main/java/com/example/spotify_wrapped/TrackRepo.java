@@ -22,7 +22,7 @@ public class TrackRepo {
     }
 
     public void fetchTopTracks(
-            String accessToken, String timeRange, trackRepo.Callback<List<Track>> callback) {
+            String accessToken, String timeRange, Callback<List<Track>> callback) {
         String url = "https://api.spotify.com/v1/me/top/tracks?time_range=" + timeRange;
         Request request = new Request.Builder()
                 .url(url)

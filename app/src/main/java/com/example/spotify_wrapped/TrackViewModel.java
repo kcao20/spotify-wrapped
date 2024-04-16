@@ -16,7 +16,7 @@ public class TrackViewModel extends ViewModel {
     }
 
     public void fetchTopTracks(String accessToken, String timeRange) {
-        trackRepo.fetchTopTracks(accessToken, timeRange, new trackRepo.Callback<List<Track>>() {
+        trackRepo.fetchTopTracks(accessToken, timeRange, new TrackRepo.Callback<List<Track>>() {
             @Override
             public void onSuccess(List<Track> result) {
                 tracks.postValue(result);
