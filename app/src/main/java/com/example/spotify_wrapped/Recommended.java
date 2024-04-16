@@ -96,8 +96,8 @@ public interface SpotifyService{ //interface containing methods to get recommend
     Call<RecommendationResponse> getRecommendations();
 }
 public interface RecListener{
-    view onRecFetched(List<Song> recommendations);
-    view onRecFail();
+    View onRecFetched(List<Song> recommendations);
+    View onRecFail();
 }
 public List<Song> processRecommendations(RecommendationResponse r) { //handles recommended songs
     List<Song> sonRecs = new ArrayList<>(); //arraylist to store them in
