@@ -2,6 +2,8 @@ package com.example.spotify_wrapped.ui.dashboard;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioAttributes;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,6 +88,38 @@ public class DashboardFragment extends Fragment {
                 });
 
         return root;
+    }
+
+    private MediaPlayer mediaPlayer;
+
+    private void playPreview(String url) {
+        // Ensure only one instance of MediaPlayer is running at a time
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+        }
+
+        mediaPlayer = new MediaPlayer();
+        try {
+            mediaPlayer.setAudioAttributes(new AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .build());
+            mediaPlayer.setDataSource(url);
+            mediaPlayer.prepareAsync(); // Asynchronously prepare the media player
+            mediaPlayer.setOnPreparedListener(
+                    mp -> mediaPlayer.start()); // Start playback once prepared
+        } catch (IOException e) {
+            Log.e("MediaPlayer", "Error setting data source", e);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 
     @Override

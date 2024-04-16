@@ -1,5 +1,7 @@
 plugins {
-    alias(libs.plugins.androidApplication)
+    //For Sarah's config. Comment out this and uncomment other one for your system
+    id("com.android.application")
+    //alias(libs.plugins.androidApplication)
     alias(libs.plugins.googleServices)
 }
 

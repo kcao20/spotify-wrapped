@@ -22,12 +22,6 @@
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.spotify_wrapped.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
-
-    <fragment
         android:id="@+id/editLoginFragment"
         android:name="com.example.spotify_wrapped.ui.profile.EditLoginFragment"
         android:label="editLogin"
