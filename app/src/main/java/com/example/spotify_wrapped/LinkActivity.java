@@ -10,8 +10,10 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.spotify_wrapped.databinding.ActivityLinkBinding;
+import com.example.spotify_wrapped.ui.home.HomeViewModel;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -52,6 +54,8 @@ public class LinkActivity extends AppCompatActivity {
     private String CLIENT_SECRET;
     private String REDIRECT_URI;
 
+    private HomeViewModel homeViewModel;
+
     private static final int REQUEST_CODE = 1337;
     private final OkHttpClient mOkHttpClient = new OkHttpClient();
     private Call mCall;
@@ -75,7 +79,7 @@ public class LinkActivity extends AppCompatActivity {
 
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
 
-        Log.d("JSON", sharedPreferences.getString("access_token", ""));
+        HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         if (sharedPreferences.contains("access_token")
                 || sharedPreferences.contains("refresh_token")) {
@@ -137,6 +141,15 @@ public class LinkActivity extends AppCompatActivity {
         AuthorizationRequest request = builder.build();
 
         Button login = binding.buttonLogin;
+        Button logout = binding.logoutBtn;
+
+        logout.setOnClickListener(v -> {
+            API.logout();
+            firebaseAuth.signOut();
+            homeViewModel.logout();
+            startActivity(new Intent(LinkActivity.this, AuthActivity.class));
+            finish();
+        });
 
         login.setOnClickListener(v -> {
             AuthorizationClient.openLoginActivity(this, REQUEST_CODE, request);

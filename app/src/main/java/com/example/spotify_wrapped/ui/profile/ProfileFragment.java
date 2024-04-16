@@ -57,12 +57,13 @@ public class ProfileFragment extends Fragment {
                 API.logout();
                 DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
                 String uid = firebaseAuth.getCurrentUser().getUid();
-                usersRef.child(uid).child("refresh_token").removeValue();
-                usersRef.child(uid).child("access_token").removeValue();
-                usersRef.child(uid).child("expires_at").removeValue();
-                Toast.makeText(getContext(), "Logged out Successfully", Toast.LENGTH_SHORT)
+                usersRef.child(uid).child("user_data").child("refresh_token").removeValue();
+                usersRef.child(uid).child("user_data").child("access_token").removeValue();
+                usersRef.child(uid).child("user_data").child("expires_at").removeValue();
+                Toast.makeText(getContext(), "Unlinked Successfully", Toast.LENGTH_SHORT)
                         .show();
                 startActivity(new Intent(requireActivity(), LinkActivity.class));
+                getActivity().finish();
             }
         });
 
