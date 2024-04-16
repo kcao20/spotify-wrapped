@@ -89,6 +89,7 @@ public class DashboardFragment extends Fragment {
 
         return root;
     }
+
     private MediaPlayer mediaPlayer;
 
     private void playPreview(String url) {
@@ -99,19 +100,19 @@ public class DashboardFragment extends Fragment {
 
         mediaPlayer = new MediaPlayer();
         try {
-            mediaPlayer.setAudioAttributes(
-                    new AudioAttributes.Builder()
-                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                            .setUsage(AudioAttributes.USAGE_MEDIA)
-                            .build()
-            );
+            mediaPlayer.setAudioAttributes(new AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .build());
             mediaPlayer.setDataSource(url);
             mediaPlayer.prepareAsync(); // Asynchronously prepare the media player
-            mediaPlayer.setOnPreparedListener(mp -> mediaPlayer.start()); // Start playback once prepared
+            mediaPlayer.setOnPreparedListener(
+                    mp -> mediaPlayer.start()); // Start playback once prepared
         } catch (IOException e) {
             Log.e("MediaPlayer", "Error setting data source", e);
         }
     }
+
     @Override
     public void onPause() {
         super.onPause();

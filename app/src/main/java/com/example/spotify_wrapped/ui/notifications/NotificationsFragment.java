@@ -74,7 +74,6 @@ public class NotificationsFragment extends Fragment {
                     for (int i = 0; i < items.length(); i++) {
                         JSONObject item = items.getJSONObject(i);
                         artists.add(item.getString("name"));
-
                     }
                     artistsTextView.setText(String.join("\n", artists));
                 } catch (JSONException e) {
@@ -82,7 +81,6 @@ public class NotificationsFragment extends Fragment {
                 }
             });
         });
-
 
         tracksBtn.setOnClickListener(v -> {
             String timeRange = "";
@@ -102,7 +100,7 @@ public class NotificationsFragment extends Fragment {
                     for (int i = 0; i < items.length(); i++) {
                         JSONObject item = items.getJSONObject(i);
                         artists.add(item.getString("name"));
-                        if (i==0) {
+                        if (i == 0) {
                             previewUrl = item.optString("preview_url");
                         }
                     }
@@ -129,19 +127,19 @@ public class NotificationsFragment extends Fragment {
 
         mediaPlayer = new MediaPlayer();
         try {
-            mediaPlayer.setAudioAttributes(
-                    new AudioAttributes.Builder()
-                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                            .setUsage(AudioAttributes.USAGE_MEDIA)
-                            .build()
-            );
+            mediaPlayer.setAudioAttributes(new AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .build());
             mediaPlayer.setDataSource(url);
             mediaPlayer.prepareAsync(); // Asynchronously prepare the media player
-            mediaPlayer.setOnPreparedListener(mp -> mediaPlayer.start()); // Start playback once prepared
+            mediaPlayer.setOnPreparedListener(
+                    mp -> mediaPlayer.start()); // Start playback once prepared
         } catch (IOException e) {
             Log.e("MediaPlayer", "Error setting data source", e);
         }
     }
+
     @Override
     public void onPause() {
         super.onPause();
