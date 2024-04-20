@@ -47,6 +47,7 @@ public class AuthActivity extends AppCompatActivity {
         }
 
         signInLauncher = registerForActivityResult(new StartActivityForResult(), result -> {
+            Log.d("AUTHENTICATION", String.valueOf(result.getResultCode()));
             if (result.getResultCode() == RESULT_OK) {
                 user = firebaseAuth.getCurrentUser();
                 if (user != null) {
