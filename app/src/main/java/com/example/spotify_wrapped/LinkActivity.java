@@ -79,7 +79,7 @@ public class LinkActivity extends AppCompatActivity {
 
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
 
-        HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         if (sharedPreferences.contains("access_token")
                 || sharedPreferences.contains("refresh_token")) {
@@ -226,7 +226,7 @@ public class LinkActivity extends AppCompatActivity {
                                     + Duration.ofSeconds(jsonObject.getInt("expires_in"))
                                             .toMillis());
                     editor.apply();
-                    populateDB(jsonObject);
+                    populateDB(jsonObject, "exchange");
 
                     startActivity(new Intent(LinkActivity.this, MainActivity.class));
                     finish();
@@ -276,7 +276,7 @@ public class LinkActivity extends AppCompatActivity {
                                     + Duration.ofSeconds(jsonObject.getInt("expires_in"))
                                             .toMillis());
                     editor.apply();
-                    populateDB(jsonObject);
+                    populateDB(jsonObject, "refresh");
 
                     startActivity(new Intent(LinkActivity.this, MainActivity.class));
                     finish();
@@ -287,7 +287,7 @@ public class LinkActivity extends AppCompatActivity {
         });
     }
 
-    public void populateDB(JSONObject jsonObject) throws JSONException {
+    public void populateDB(JSONObject jsonObject, String type) throws JSONException {
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
         FirebaseUser user = firebaseAuth.getCurrentUser();
         String uid = user.getUid();
@@ -298,13 +298,15 @@ public class LinkActivity extends AppCompatActivity {
                 .setValue(jsonObject.getString("access_token"));
         usersRef.child(uid)
                 .child("user_data")
-                .child("refresh_token")
-                .setValue(jsonObject.getString("refresh_token"));
-        usersRef.child(uid)
-                .child("user_data")
                 .child("expires_at")
                 .setValue(currentTimestamp
                         + Duration.ofSeconds(jsonObject.getInt("expires_in")).toMillis());
+        if (type.equals("exchange")) {
+            usersRef.child(uid)
+                    .child("user_data")
+                    .child("refresh_token")
+                    .setValue(jsonObject.getString("refresh_token"));
+        }
     }
 
     private void cancelCall() {
