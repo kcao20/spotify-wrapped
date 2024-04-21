@@ -1,7 +1,6 @@
 # spotify-wrapped
 
 ## Setup
-___
 ### Environment Variables
 1. Create env file at ```app/src/main/assets/env``` or rename ```app/src/main/assets/env.example``` to env
 2. Fill in variables
@@ -15,19 +14,14 @@ ___
     manifestPlaceholders = [redirectSchemeName: "spotify-wrapped", redirectHostName: "auth"]
     ```
 ## User Stories
-___
 ### Base User Stories
 - [x] User Story #1
 - [x] User Story #2
 ### Optional
-- [ ] Friend View (3/+2)
-- [ ] Holiday Wrapped (5/+2)
-- [ ] Quiz / Games (5/8/13)
-- [ ] Music Recommendations (3/+2)
-- [x] Timespan (5)
-- [ ] Public Spotify Wrapped Page (8/+3/+13/+2/+3)
-- [x] CI/CD Pipeline (5/+1) 
-- [x] Firebase (8)
-- [x] Templates for PRs and issues (1)
+- [x] Audio Clips [#5] (13pts)
+- [x] Timespan [#8] (5pts)
+- [x] CI/CD Pipeline [#10] (5/+1pts)
+- [x] Firebase [#12] (8pts)
+- [x] Templates [#13] for PRs and issues (1pts)
 
-Current Score: ```20/32```
+Current Score: ```33/28```
