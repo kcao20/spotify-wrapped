@@ -84,6 +84,8 @@ public class ProfileFragment extends Fragment {
 
         delete.setOnClickListener(v -> {
             args.putString("op", "delete");
+            API.logout();
+            homeViewModel.logout();
             Navigation.findNavController(v).navigate(R.id.profileToVerifyLogin, args);
         });
 

@@ -1,7 +1,5 @@
 plugins {
-    //For Sarah's config. Comment out this and uncomment other one for your system
-    id("com.android.application")
-    //alias(libs.plugins.androidApplication)
+    alias(libs.plugins.androidApplication)
     alias(libs.plugins.googleServices)
 }
 
@@ -35,10 +33,10 @@ android {
     buildFeatures {
         viewBinding true
     }
-
-    lintOptions {
+    lint {
         disable 'NotificationPermission'
     }
+
 }
 
 dependencies {

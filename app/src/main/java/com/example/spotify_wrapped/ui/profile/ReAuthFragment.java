@@ -74,6 +74,7 @@ public class ReAuthFragment extends Fragment {
                                                 .show();
                                         startActivity(
                                                 new Intent(requireActivity(), AuthActivity.class));
+                                        getActivity().finish();
                                     } else {
                                         Toast.makeText(
                                                         requireContext(),
