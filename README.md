@@ -1,5 +1,5 @@
 # spotify-wrapped
-
+[Website](https://88cs2340.wixsite.com/spotify-wrapped-armi)
 ## Setup
 ### Environment Variables
 1. Create env file at ```app/src/main/assets/env``` or rename ```app/src/main/assets/env.example``` to env
